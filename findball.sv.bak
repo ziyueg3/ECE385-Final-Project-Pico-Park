@@ -1,0 +1,24 @@
+module findball(input logic[9:0] drawX,drawY,BallX,BallY,
+					input logic CLK,
+					output logic find,
+					output logic[9:0] findballx,findbally);
+					parameter [9:0] Ballxsize = 80;
+					parameter [9:0] Ballysize = 60;
+					
+					always_ff @(posedge CLK) begin
+					if(((drawX-BallX)<Ballxsize)&&(drawX-BallX)>(-Ballxsize))&&((drawY-BallY)<Ballysize))&&(drawY-BallY)>(-Ballysize))
+						begin
+							find <=1'b1;
+						end
+						else
+						begin
+							find <=1'b0;
+						end
+										
+					findballx <=Ballxsize+(drawX-BallX);
+				   findbally <=Ballysize+(drawY-BallY);
+					
+					end
+					
+					
+					

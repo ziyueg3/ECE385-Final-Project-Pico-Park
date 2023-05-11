@@ -1,0 +1,74 @@
+module character_relation (
+	input [9:0] testballx_blue,testbally_blue,Ball_v_blue,
+	input [9:0] testballx_red,testbally_red,Ball_v_red,
+	input [9:0] ballxsig_blue, ballysig_blue,ballxsig_red, ballysig_red,
+	input logic Clk,x_direction_blue,jump_blue,x_direction_red,jump_red,
+	
+	output logic movex_blue,movey_blue,movex_red,movey_red
+);
+
+always_comb begin
+	if(x_direction_blue & x_direction_red)//both right
+	begin
+		if(testballx_blue-testballx_red == 40)//red blue
+		begin
+			movex_blue = 1'b1;
+			movex_red  = 1'b0;
+		end
+		else if(testballx_red-testballx_blue == 40)//blue red
+		begin
+			movex_blue = 1'b0;
+			movex_red  = 1'b1;
+		end
+		else
+		begin
+			movex_blue = 1'b1;
+			movex_red  = 1'b1;
+		end
+	end
+	else if(x_direction_blue & ~x_direction_red)//blue right red left
+	begin
+		if(testballx_red-testballx_blue == 40)//blue red
+		begin
+			movex_blue = 1'b0;
+			movex_red  = 1'b1;
+		end
+		else
+		begin
+			movex_blue = 1'b1;
+			movex_red  = 1'b1;
+		end
+	end
+	else if(~x_direction_blue & x_direction_red)//blue left red right
+	begin
+		if(testballx_blue-testballx_red == 40)//red blue
+		begin
+			movex_blue = 1'b1;
+			movex_red  = 1'b0;
+		end
+		else
+		begin
+			movex_blue = 1'b1;
+			movex_red  = 1'b1;
+		end
+	end
+	else //both left
+	begin
+		if(testballx_blue-testballx_red == 40)//red blue
+		begin
+			movex_blue = 1'b0;
+			movex_red  = 1'b1;
+		end
+		else if(testballx_red-testballx_blue == 40)//blue red
+		begin
+			movex_blue = 1'b1;
+			movex_red  = 1'b0;
+		end
+		else
+		begin
+			movex_blue = 1'b1;
+			movex_red  = 1'b1;
+		end
+	end
+end
+endmodule

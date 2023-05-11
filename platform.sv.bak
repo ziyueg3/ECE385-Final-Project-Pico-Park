@@ -1,0 +1,100 @@
+module platform(input logic Clk,Reset,
+					 input logic [11:0] ballxblue,ballyblue,ballxred,ballyred,zerox,
+					 input logic [11:0]drawx,drawy,
+					 output logic findplatform,
+					 output logic platonblue,platonred, 
+					);
+				parameter [11:0]platinitialy=415;
+				parameter [11:0]platxright=2287;
+				parameter [11:0]platxleft=2161;
+				parameter [11:0]platx=2224;
+				parameter [11:0]platfinaly=191;
+				parameter [11:0]plattall=16;
+			   logic [11:0] platup,platdown,ballblueleft,ballblueright,ballblueup,ballbluedown,ballredup,ballreddown,ballredleft,ballredleft;
+				
+				assign platup=platdown-plattall;
+				assign ballblueleft=ballxblue-20;
+				assign ballblueright=ballxblue+20;
+				assign ballredleft=ballxred-20;
+				assign ballredright=ballxred+20;
+				assign ballblueup =ballyblue-25;
+				assign ballbluedown =ballyblue+25;
+				assign ballredup =ballyred-25;
+				assign ballreddown =ballyred+25;
+				
+				
+				always_ff @(postedge Clk) begin
+				if (Reset)
+				 begin
+					//platformx <=platx;
+					platdown <=platinitialy;
+					platonblue <= 0;
+					platonred  <= 0;
+				 end
+				else
+					if((ballblueleft<platxright)&(ballblueright>platxleft)&(ballredleft<platxright)&(ballredright>platxleft)&(ballbluedown>=platup))
+						begin
+							if((platdown-1)<=platfinaly)
+								begin
+									if(ballbluedown>=platup)
+										begin
+											platonblue=1;
+										end
+									if(ballreddown>=platup)
+										begin
+											platonred=1;
+										end
+									platdown=platdown-1;
+							end
+							else
+								begin
+									if(ballbluedown>=platup)
+										begin
+											platonblue=1;
+										end
+									if(ballreddown>=platup)
+										begin
+											platonred=1;
+										end
+									//platdown=platdown;
+									if((platdown+1)>=platinitialy)
+										begin
+											platdown=platdown+1;
+										end
+									else
+										begin
+											platdown=platdown;
+										end
+								end
+						end
+					else 
+						begin
+							platonblue=0;
+							platonred=0;
+							if((platdown+1)>=platinitialy)
+								begin
+									platdown=platdown+1;
+								end
+							else
+								begin
+									platdown=platdown;
+								end
+						end
+					end
+					
+					
+					always_comb begin
+						if((drawx+zerox>=platxleft)&(drawx+zerox<=platxright)&(drawy<=platdown)&(drawy>=platup))
+							begin
+								findplatform=1;
+							end
+						else
+							begin
+								findplatform=0;
+							end
+					end
+
+endmodule  
+									
+								
+			

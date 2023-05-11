@@ -1,0 +1,35 @@
+module colorselect (input logic find_blue,find_red, isinretangle,isbutton,
+						  input logic [3:0] now_color_back,now_color_blueman,now_color_redman,
+						  output logic[3:0] now_color);
+						
+				parameter[3:0] orange=3;
+				parameter[3:0] red=1;
+					
+					
+					always_comb begin
+						if(find_blue)
+							begin
+								now_color = now_color_blueman;
+							end
+						else if(~find_blue & find_red)
+							begin
+								now_color = now_color_redman;
+							end
+						else if(is button)
+							begin
+								now_color=red;
+							end
+						else if(isinretangle)
+							begin
+								now_color=orange;
+							end
+						else
+							begin
+								now_color = now_color_back;
+							end
+						  
+
+						  
+						  
+						  
+endmodule  

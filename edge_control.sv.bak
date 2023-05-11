@@ -1,0 +1,48 @@
+module edge_control(input logic [9:0]ball_x_blue,ball_x_red,
+						  input logic Reset,
+						  
+						  output logic [10:0] zeropointx,
+						  output logic edgemovexblue,edgemovexred
+							);
+			parameter [9:0] rigntedge = 620;
+			parameter [9:0] leftedge = 20;
+				       
+			always_ff(@posedge) begin
+				if (Reset)
+				zeropointx <= 0;
+				always_ff(@posedge) begin
+				if (((ball_x_blue >=rightedge)&(ball_x_red>=leftedge))|((ball_x_red >=rightedge)&(ball_x_blue>=leftedge)))
+				begin
+					zeropointx <= zeropointx+1;
+					edgemovexblue <= 1'b1;
+					edgemovexred  <= 1'b1;
+				end
+				else if (((ball_x_blue >=rightedge)&(ball_x_red<leftedge))|((ball_x_red >=rightedge)&(ball_x_blue<leftedge)))
+				begin
+					zeropointx<=zeropointx;
+					edgemovexblue <= 1'b0;
+					edgemovexred  <= 1'b0;
+				end
+				else if(((ball_x_blue <=rightedge)&(ball_x_red <=leftedge))|((ball_x_red <=rightedge)&(ball_x_blue <=leftedge)))
+				begin
+				
+				  if (zeropointx>0)
+				  begin
+				  zeropointx<=zeropointx-1;
+				  edgemovexblue <= 1'b1;
+				  edgemovexred  <= 1'b1;
+				  end
+				  else
+				  begin
+				  zeropointx<=zeropointx;
+				  edgemovexblue <= 1'b0;
+				  edgemovexred  <= 1'b0;
+				  end
+				else
+				begin
+					zeropointx<=zeropointx;
+					edgemoveblue<=1'b1;
+					edgemovered <=1'b1;
+				end
+			end
+endmodule  

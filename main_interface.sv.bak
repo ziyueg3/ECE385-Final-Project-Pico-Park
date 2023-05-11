@@ -1,0 +1,7 @@
+module main_interface(input logic 
+							
+							
+							output logic
+							
+							
+							);
